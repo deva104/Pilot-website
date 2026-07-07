@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Eagle-d — automatic number-plate gate access for housing societies. Works even during power and internet cuts.">
+  <title>Eagle-d — Every entry, verified.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#111111',
+            muted: '#666666',
+            surface: '#F5F5F5',
+            accent: '#0A2540',
+            border: '#E5E5E5',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          maxWidth: {
+            content: '72rem',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #111111;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Scroll-reveal */
+    [data-animate] {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 400ms ease, transform 400ms ease;
+    }
+    [data-animate].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger children */
+    [data-animate-stagger] > * {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 400ms ease, transform 400ms ease;
+    }
+    [data-animate-stagger].is-visible > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
+    [data-animate-stagger].is-visible > *:nth-child(2) { transition-delay: 80ms; opacity: 1; transform: translateY(0); }
+    [data-animate-stagger].is-visible > *:nth-child(3) { transition-delay: 160ms; opacity: 1; transform: translateY(0); }
+    [data-animate-stagger].is-visible > *:nth-child(4) { transition-delay: 240ms; opacity: 1; transform: translateY(0); }
+
+    /* Image placeholder fallback */
+    .img-placeholder {
+      background-color: #F5F5F5;
+      border: 1px solid #E5E5E5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666666;
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    /* Focus styles */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid #0A2540;
+      outline-offset: 2px;
+    }
+
+    /* How-it-works connector line */
+    @media (min-width: 768px) {
+      .step-connector::after {
+        content: '';
+        position: absolute;
+        top: 2.75rem;
+        left: calc(100% - 1rem);
+        width: calc(100% - 2rem);
+        height: 1px;
+        background-color: #E5E5E5;
+        z-index: 0;
+      }
+      .step-connector:last-child::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="bg-white text-ink antialiased">
+
+  <!-- ═══════════════════ HEADER ═══════════════════ -->
+  <header class="sticky top-0 z-50 bg-white border-b border-border">
+    <div class="mx-auto max-w-content px-5 sm:px-8">
+      <div class="flex items-center justify-between h-16 lg:h-[4.5rem]">
+
+        <a href="#" class="text-lg font-semibold tracking-tight text-ink shrink-0" aria-label="Eagle-d home">
+          Eagle-d
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="hidden lg:flex items-center gap-8" aria-label="Main navigation">
+          <a href="#product" class="text-sm text-muted hover:text-ink transition-colors">Product</a>
+          <a href="#how-it-works" class="text-sm text-muted hover:text-ink transition-colors">How it works</a>
+          <a href="#features" class="text-sm text-muted hover:text-ink transition-colors">Features</a>
+          <a href="#pilot" class="text-sm text-muted hover:text-ink transition-colors">Pilot</a>
+        </nav>
+
+        <div class="hidden lg:block shrink-0">
+          <a href="#contact" data-interest="pilot"
+             class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-white bg-accent rounded hover:bg-[#081c30] transition-colors">
+            Book a Pilot
+          </a>
+        </div>
+
+        <!-- Mobile menu button -->
+        <button id="menu-btn" type="button"
+                class="lg:hidden flex items-center justify-center w-10 h-10 -mr-2 text-ink"
+                aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <svg id="menu-icon-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+          </svg>
+          <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile nav -->
+    <nav id="mobile-nav" class="hidden lg:hidden border-t border-border bg-white" aria-label="Mobile navigation" aria-hidden="true">
+      <div class="mx-auto max-w-content px-5 sm:px-8 py-6 flex flex-col gap-5">
+        <a href="#product" class="text-base text-ink">Product</a>
+        <a href="#how-it-works" class="text-base text-ink">How it works</a>
+        <a href="#features" class="text-base text-ink">Features</a>
+        <a href="#pilot" class="text-base text-ink">Pilot</a>
+        <a href="#contact" data-interest="pilot"
+           class="inline-flex items-center justify-center px-5 py-3 text-sm font-medium text-white bg-accent rounded w-full mt-2">
+          Book a Pilot
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ═══════════════════ HERO ═══════════════════ -->
+    <section class="py-16 sm:py-24 lg:py-32" aria-labelledby="hero-heading">
+      <div class="mx-auto max-w-content px-5 sm:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+          <div data-animate>
+            <h1 id="hero-heading" class="text-[clamp(2.25rem,5vw,3.75rem)] font-bold leading-[1.08] tracking-tight text-ink">
+              Every entry, verified.
+            </h1>
+            <p class="mt-6 text-lg sm:text-xl text-muted leading-relaxed max-w-lg">
+              Automatic number-plate gate access for housing societies — works even during power and internet cuts.
+            </p>
+            <div class="mt-10 flex flex-col sm:flex-row sm:items-center gap-4">
+              <a href="#contact" data-interest="pilot"
+                 class="inline-flex items-center justify-center px-6 py-3.5 text-sm font-medium text-white bg-accent rounded hover:bg-[#081c30] transition-colors">
+                Book a Pilot
+              </a>
+              <a href="#contact" data-interest="demo"
+                 class="inline-flex items-center justify-center px-6 py-3.5 text-sm font-medium text-ink border border-border rounded hover:border-ink/30 transition-colors">
+                Request a Demo
+              </a>
+            </div>
+            <p class="mt-5">
+              <a href="#contact" data-interest="call" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink transition-colors group">
+                Request a call
+                <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                </svg>
+              </a>
+            </p>
+          </div>
+
+          <div data-animate>
+            <!-- HERO IMAGE: 1200x900px, a car at a society gate, barrier arm lifting. Replace images/hero.jpg -->
+            <div class="aspect-[4/3] w-full overflow-hidden rounded-sm">
+              <img src="images/hero.jpg"
+                   alt="Vehicle at a housing society gate with the barrier lifting automatically"
+                   class="w-full h-full object-cover img-placeholder"
+                   width="1200" height="900"
+                   onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22900%22%3E%3Crect fill=%22%23F5F5F5%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23666666%22 font-family=%22Inter,sans-serif%22 font-size=%2214%22%3E1200 × 900 — Hero: vehicle at society gate%3C/text%3E%3C/svg%3E';">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════ PROBLEM ═══════════════════ -->
+    <section class="bg-surface py-16 sm:py-24 lg:py-[6rem]" aria-labelledby="problem-heading">
+      <div class="mx-auto max-w-content px-5 sm:px-8">
+        <div class="max-w-2xl" data-animate>
+          <h2 id="problem-heading" class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-bold tracking-tight text-ink">
+            Gate access shouldn't depend on a notebook and a guard's handwriting.
+          </h2>
+          <p class="mt-5 text-lg text-muted leading-relaxed">
+            Most housing societies still manage entry the same way — manual registers, guards noting plates by hand, slow queues at peak hours, and no reliable record of who came in or went out.
+          </p>
+        </div>
+
+        <ol class="mt-14 grid sm:grid-cols-3 gap-8 sm:gap-10 max-w-4xl" data-animate-stagger>
+          <li class="flex gap-4">
+            <span class="shrink-0 w-8 h-8 flex items-center justify-center text-sm font-medium text-accent border border-border rounded-sm" aria-hidden="true">01</span>
+            <div>
+              <h3 class="text-base font-semibold text-ink">Manual registers</h3>
+              <p class="mt-2 text-sm text-muted leading-relaxed">Paper logbooks that are incomplete, illegible, or missing entries by the end of the month.</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="shrink-0 w-8 h-8 flex items-center justify-center text-sm font-medium text-accent border border-border rounded-sm" aria-hidden="true">02</span>
+            <div>
+              <h3 class="text-base font-semibold text-ink">Slow entry at peak hours</h3>
+              <p class="mt-2 text-sm text-muted leading-relaxed">Residents and visitors wait while guards verify details, write plates down, and call for approval.</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="shrink-0 w-8 h-8 flex items-center justify-center text-sm font-medium text-accent border border-border rounded-sm" aria-hidden="true">03</span>
+            <div>
+              <h3 class="text-base font-semibold text-ink">No reliable audit trail</h3>
+              <p class="mt-2 text-sm text-muted leading-relaxed">When something goes wrong, there is no searchable, timestamped record of vehicle movements.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
+    <section id="how-it-works" class="py-16 sm:py-24 lg:py-[6rem]" aria-labelledby="how-heading">
+      <div class="mx-auto max-w-content px-5 sm:px-8">
+        <div class="max-w-xl" data-animate>
+          <h2 id="how-heading" class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-bold tracking-tight text-ink">
+            How it works
+          </h2>
+          <p class="mt-4 text-lg text-muted leading-relaxed">
+            Three steps from plate to barrier — fully automatic, no guard intervention required.
+          </p>
+        </div>
+
+        <div class="mt-16 grid md:grid-cols-3 gap-12 md:gap-8" data-animate-stagger>
+
+          <div class="relative step-connector">
+            <div class="aspect-[4/3] w-full overflow-hidden rounded-sm border border-border mb-6">
+              <!-- STEP 1 IMAGE: 800x600px, ANPR camera at gate reading a plate. Replace images/step-1.jpg -->
+              <img src="images/step-1.jpg"
+                   alt="ANPR camera mounted at a gate reading a vehicle number plate"
+                   class="w-full h-full object-cover img-placeholder"
+                   width="800" height="600"
+                   onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22600%22%3E%3Crect fill=%22%23F5F5F5%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23666666%22 font-family=%22Inter,sans-serif%22 font-size=%2214%22%3E800 × 600 — Step 1: camera reads plate%3C/text%3E%3C/svg%3E';">
+            </div>
+            <p class="text-xs font-medium text-muted uppercase tracking-widest mb-2">Step 1</p>
+            <h3 class="text-lg font-semibold text-ink">Camera reads the plate</h3>
+            <p class="mt-2 text-sm text-muted leading-relaxed">The unit captures the number plate as the vehicle approaches the gate.</p>
+          </div>
+
+          <div class="relative step-connector">
+            <div class="aspect-[4/3] w-full overflow-hidden rounded-sm border border-border mb-6">
+              <!-- STEP 2 IMAGE: 800x600px, verification against approved list. Replace images/step-2.jpg -->
+              <img src="images/step-2.jpg"
+                   alt="System verifying the number plate against the society's approved vehicle list"
+                   class="w-full h-full object-cover img-placeholder"
+                   width="800" height="600"
+                   onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22600%22%3E%3Crect fill=%22%23F5F5F5%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23666666%22 font-family=%22Inter,sans-serif%22 font-size=%2214%22%3E800 × 600 — Step 2: system verifies plate%3C/text%3E%3C/svg%3E';">
+            </div>
+            <p class="text-xs font-medium text-muted uppercase tracking-widest mb-2">Step 2</p>
+            <h3 class="text-lg font-semibold text-ink">System verifies access</h3>
+            <p class="mt-2 text-sm text-muted leading-relaxed">The plate is checked against the society's approved-vehicle list in under a second.</p>
+          </div>
+
+          <div class="relative">
+            <div class="aspect-[4/3] w-full overflow-hidden rounded-sm border border-border mb-6">
+              <!-- STEP 3 IMAGE: 800x600px, barrier opening for vehicle. Replace images/step-3.jpg -->
+              <img src="images/step-3.jpg"
+                   alt="Barrier arm opening automatically to allow the verified vehicle through"
+                   class="w-full h-full object-cover img-placeholder"
+                   width="800" height="600"
+                   onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22600%22%3E%3Crect fill=%22%23F5F5F5%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23666666%22 font-family=%22Inter,sans-serif%22 font-size=%2214%22%3E800 × 600 — Step 3: barrier opens%3C/text%3E%3C/svg%3E';">
+            </div>
+            <p class="text-xs font-medium text-muted uppercase tracking-widest mb-2">Step 3</p>
+            <h3 class="text-lg font-semibold text-ink">Barrier opens automatically</h3>
+            <p class="mt-2 text-sm text-muted leading-relaxed">Authorized vehicles pass through without stopping. Unknown plates are flagged for review.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════ FEATURES ═══════════════════ -->
+    <section id="features" class="bg-surface py-16 sm:py-24 lg:py-[6rem]" aria-labelledby="features-heading">
+      <div class="mx-auto max-w-content px-5 sm:px-8">
+        <div class="max-w-xl" data-animate>
+          <h2 id="features-heading" class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-bold tracking-tight text-ink">
+            Built for real gate conditions
+          </h2>
+          <p class="mt-4 text-lg text-muted leading-relaxed">
+            Hardware and software designed for the constraints housing societies actually face.
+          </p>
+        </div>
+
+        <div class="mt-14 grid sm:grid-cols-2 gap-px bg-border border border-border rounded-sm overflow-hidden" data-animate-stagger>
+          <div class="bg-white p-8 sm:p-10">
+            <h3 class="text-lg font-semibold text-ink">Works offline</h3>
+            <p class="mt-3 text-sm text-muted leading-relaxed">Keeps operating through power and internet outages. Verification and barrier control run locally on the unit.</p>
+          </div>
+          <div class="bg-white p-8 sm:p-10">
+            <h3 class="text-lg font-semibold text-ink">Sub-second access</h3>
+            <p class="mt-3 text-sm text-muted leading-relaxed">Reads the plate and opens the barrier in under a second. No queue, no waiting for a guard.</p>
+          </div>
+          <div class="bg-white p-8 sm:p-10">
+            <h3 class="text-lg font-semibold text-ink">Approved-vehicle list</h3>
+            <p class="mt-3 text-sm text-muted leading-relaxed">The society manages who is allowed in. Unknown vehicles are flagged instead of granted access.</p>
+          </div>
+          <div class="bg-white p-8 sm:p-10">
+            <h3 class="text-lg font-semibold text-ink">Complete entry &amp; exit log</h3>
+            <p class="mt-3 text-sm text-muted leading-relaxed">Every vehicle in and out, timestamped and searchable. A reliable audit trail for the management committee.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════ PRODUCT / HARDWARE ═══════════════════ -->
+    <section id="product" class="py-16 sm:py-24 lg:py-[6rem]" aria-labelledby="product-heading">
+      <div class="mx-auto max-w-content px-5 sm:px-8">
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          <div class="lg:col-span-4" data-animate>
+            <h2 id="product-heading" class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-bold tracking-tight text-ink">
+              One unit at the gate
+            </h2>
+            <p class="mt-5 text-base text-muted leading-relaxed">
+              Eagle-d is a compact camera-and-controller unit installed at the society entrance. It connects to your existing barrier arm and runs independently — no server room, no on-site PC.
+            </p>
+            <p class="mt-4 text-base text-muted leading-relaxed">
+              Designed for outdoor installation with local storage and processing, so gate access does not stop when the power or internet does.
+            </p>
+          </div>
+          <div class="lg:col-span-8" data-animate>
+            <!-- PRODUCT IMAGE: 1400x900px, gate unit/camera hardware installed. Replace images/product.jpg -->
+            <div class="aspect-[14/9] w-full overflow-hidden rounded-sm">
+              <img src="images/product.jpg"
+                   alt="Eagle-d compact gate access unit installed at a housing society entrance"
+                   class="w-full h-full object-cover img-placeholder"
+                   width="1400" height="900"
+                   onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221400%22 height=%22900%22%3E%3Crect fill=%22%23F5F5F5%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23666666%22 font-family=%22Inter,sans-serif%22 font-size=%2214%22%3E1400 × 900 — Product: gate unit at society entrance%3C/text%3E%3C/svg%3E';">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════ PILOT CTA ═══════════════════ -->
+    <section id="pilot" class="bg-accent py-16 sm:py-24 lg:py-[6rem]" aria-labelledby="pilot-heading">
+      <div class="mx-auto max-w-content px-5 sm:px-8">
+        <div class="max-w-2xl" data-animate>
+          <h2 id="pilot-heading" class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-bold tracking-tight text-white">
+            Open a pilot at your society.
+          </h2>
+          <p class="mt-5 text-lg text-white/70 leading-relaxed">
+            We are onboarding a limited number of housing societies for early access. Install the unit, run it alongside your current process, and evaluate it on your own terms.
+          </p>
+          <div class="mt-10 flex flex-col sm:flex-row sm:items-center gap-5">
+            <a href="#contact" data-interest="pilot"
+               class="inline-flex items-center justify-center px-6 py-3.5 text-sm font-medium text-accent bg-white rounded hover:bg-white/90 transition-colors">
+              Book a Pilot
+            </a>
+            <a href="#contact" data-interest="call"
+               class="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white transition-colors group">
+              Request a call
+              <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════ CONTACT ═══════════════════ -->
+    <section id="contact" class="py-16 sm:py-24 lg:py-[6rem]" aria-labelledby="contact-heading">
+      <div class="mx-auto max-w-content px-5 sm:px-8">
+        <div class="grid lg:grid-cols-12 gap-12 lg:gap-16">
+
+          <div class="lg:col-span-5" data-animate>
+            <h2 id="contact-heading" class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-bold tracking-tight text-ink">
+              Get in touch
+            </h2>
+            <p class="mt-5 text-base text-muted leading-relaxed">
+              Tell us about your society and what you are looking for. We will follow up within two business days.
+            </p>
+          </div>
+
+          <div class="lg:col-span-7" data-animate>
+            <form action="REPLACE_WITH_FORM_ENDPOINT" method="POST" class="space-y-5">
+
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="name" class="block text-sm font-medium text-ink mb-1.5">Name</label>
+                  <input type="text" id="name" name="name" required autocomplete="name"
+                         class="w-full px-4 py-3 text-sm border border-border rounded bg-white text-ink placeholder:text-muted/60">
+                </div>
+                <div>
+                  <label for="society" class="block text-sm font-medium text-ink mb-1.5">Society name</label>
+                  <input type="text" id="society" name="society" required
+                         class="w-full px-4 py-3 text-sm border border-border rounded bg-white text-ink placeholder:text-muted/60">
+                </div>
+              </div>
+
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="phone" class="block text-sm font-medium text-ink mb-1.5">Phone</label>
+                  <input type="tel" id="phone" name="phone" required autocomplete="tel"
+                         class="w-full px-4 py-3 text-sm border border-border rounded bg-white text-ink placeholder:text-muted/60">
+                </div>
+                <div>
+                  <label for="email" class="block text-sm font-medium text-ink mb-1.5">Email</label>
+                  <input type="email" id="email" name="email" required autocomplete="email"
+                         class="w-full px-4 py-3 text-sm border border-border rounded bg-white text-ink placeholder:text-muted/60">
+                </div>
+              </div>
+
+              <div>
+                <label for="interest" class="block text-sm font-medium text-ink mb-1.5">I'm interested in</label>
+                <select id="interest" name="interest" required
+                        class="w-full px-4 py-3 text-sm border border-border rounded bg-white text-ink">
+                  <option value="pilot">Book a pilot</option>
+                  <option value="demo">Request a demo</option>
+                  <option value="call">Request a call</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="message" class="block text-sm font-medium text-ink mb-1.5">Message</label>
+                <textarea id="message" name="message" rows="4"
+                          class="w-full px-4 py-3 text-sm border border-border rounded bg-white text-ink placeholder:text-muted/60 resize-y"></textarea>
+              </div>
+
+              <div>
+                <button type="submit"
+                        class="inline-flex items-center justify-center px-6 py-3.5 text-sm font-medium text-white bg-accent rounded hover:bg-[#081c30] transition-colors">
+                  Send message
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer class="bg-ink text-white py-14 sm:py-16">
+    <div class="mx-auto max-w-content px-5 sm:px-8">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+
+        <div class="lg:col-span-5">
+          <p class="text-lg font-semibold tracking-tight">Eagle-d</p>
+          <p class="mt-3 text-sm text-white/50">Every entry, verified.</p>
+        </div>
+
+        <nav class="lg:col-span-4 flex flex-col gap-3" aria-label="Footer navigation">
+          <a href="#product" class="text-sm text-white/60 hover:text-white transition-colors">Product</a>
+          <a href="#how-it-works" class="text-sm text-white/60 hover:text-white transition-colors">How it works</a>
+          <a href="#features" class="text-sm text-white/60 hover:text-white transition-colors">Features</a>
+          <a href="#pilot" class="text-sm text-white/60 hover:text-white transition-colors">Pilot</a>
+          <a href="#contact" class="text-sm text-white/60 hover:text-white transition-colors">Contact</a>
+        </nav>
+
+        <div class="lg:col-span-3">
+          <p class="text-sm text-white/60">
+            <a href="mailto:hello@eagle-d.com" class="hover:text-white transition-colors">hello@eagle-d.com</a>
+          </p>
+        </div>
+
+      </div>
+
+      <div class="mt-12 pt-8 border-t border-white/10">
+        <p class="text-xs text-white/40">&copy; 2026 Eagle-d. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
