@@ -62,20 +62,6 @@
     [data-animate-stagger].is-visible > *:nth-child(3) { transition-delay: 160ms; opacity: 1; transform: translateY(0); }
     [data-animate-stagger].is-visible > *:nth-child(4) { transition-delay: 240ms; opacity: 1; transform: translateY(0); }
 
-    /* Image placeholder fallback */
-    .img-placeholder {
-      background-color: #F5F5F5;
-      border: 1px solid #E5E5E5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #666666;
-      font-size: 0.8125rem;
-      line-height: 1.4;
-      text-align: center;
-      padding: 1.5rem;
-    }
-
     /* Focus styles */
     a:focus-visible,
     button:focus-visible,
@@ -194,13 +180,11 @@
           </div>
 
           <div data-animate>
-            <!-- HERO IMAGE: 1200x900px, a car at a society gate, barrier arm lifting. Replace images/hero.jpg -->
             <div class="aspect-[4/3] w-full overflow-hidden rounded-sm">
-              <img src="images/hero.jpg"
+              <img src="images/hero.png"
                    alt="Vehicle at a housing society gate with the barrier lifting automatically"
-                   class="w-full h-full object-cover img-placeholder"
-                   width="1200" height="900"
-                   onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22900%22%3E%3Crect fill=%22%23F5F5F5%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23666666%22 font-family=%22Inter,sans-serif%22 font-size=%2214%22%3E1200 × 900 — Hero: vehicle at society gate%3C/text%3E%3C/svg%3E';">
+                   class="w-full h-full object-cover"
+                   width="1200" height="900">
             </div>
           </div>
 
@@ -264,12 +248,10 @@
 
           <div class="relative step-connector">
             <div class="aspect-[4/3] w-full overflow-hidden rounded-sm border border-border mb-6">
-              <!-- STEP 1 IMAGE: 800x600px, ANPR camera at gate reading a plate. Replace images/step-1.jpg -->
-              <img src="images/step-1.jpg"
+              <img src="images/step-1.png"
                    alt="ANPR camera mounted at a gate reading a vehicle number plate"
-                   class="w-full h-full object-cover img-placeholder"
-                   width="800" height="600"
-                   onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22600%22%3E%3Crect fill=%22%23F5F5F5%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23666666%22 font-family=%22Inter,sans-serif%22 font-size=%2214%22%3E800 × 600 — Step 1: camera reads plate%3C/text%3E%3C/svg%3E';">
+                   class="w-full h-full object-cover"
+                   width="800" height="600">
             </div>
             <p class="text-xs font-medium text-muted uppercase tracking-widest mb-2">Step 1</p>
             <h3 class="text-lg font-semibold text-ink">Camera reads the plate</h3>
@@ -278,12 +260,10 @@
 
           <div class="relative step-connector">
             <div class="aspect-[4/3] w-full overflow-hidden rounded-sm border border-border mb-6">
-              <!-- STEP 2 IMAGE: 800x600px, verification against approved list. Replace images/step-2.jpg -->
-              <img src="images/step-2.jpg"
+              <img src="images/step-2.png"
                    alt="System verifying the number plate against the society's approved vehicle list"
-                   class="w-full h-full object-cover img-placeholder"
-                   width="800" height="600"
-                   onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22600%22%3E%3Crect fill=%22%23F5F5F5%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23666666%22 font-family=%22Inter,sans-serif%22 font-size=%2214%22%3E800 × 600 — Step 2: system verifies plate%3C/text%3E%3C/svg%3E';">
+                   class="w-full h-full object-cover"
+                   width="800" height="600">
             </div>
             <p class="text-xs font-medium text-muted uppercase tracking-widest mb-2">Step 2</p>
             <h3 class="text-lg font-semibold text-ink">System verifies access</h3>
@@ -292,12 +272,10 @@
 
           <div class="relative">
             <div class="aspect-[4/3] w-full overflow-hidden rounded-sm border border-border mb-6">
-              <!-- STEP 3 IMAGE: 800x600px, barrier opening for vehicle. Replace images/step-3.jpg -->
-              <img src="images/step-3.jpg"
+              <img src="images/step-3.png"
                    alt="Barrier arm opening automatically to allow the verified vehicle through"
-                   class="w-full h-full object-cover img-placeholder"
-                   width="800" height="600"
-                   onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22600%22%3E%3Crect fill=%22%23F5F5F5%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23666666%22 font-family=%22Inter,sans-serif%22 font-size=%2214%22%3E800 × 600 — Step 3: barrier opens%3C/text%3E%3C/svg%3E';">
+                   class="w-full h-full object-cover"
+                   width="800" height="600">
             </div>
             <p class="text-xs font-medium text-muted uppercase tracking-widest mb-2">Step 3</p>
             <h3 class="text-lg font-semibold text-ink">Barrier opens automatically</h3>
@@ -359,13 +337,11 @@
             </p>
           </div>
           <div class="lg:col-span-8" data-animate>
-            <!-- PRODUCT IMAGE: 1400x900px, gate unit/camera hardware installed. Replace images/product.jpg -->
             <div class="aspect-[14/9] w-full overflow-hidden rounded-sm">
-              <img src="images/product.jpg"
+              <img src="images/product.png"
                    alt="Eagle-d compact gate access unit installed at a housing society entrance"
-                   class="w-full h-full object-cover img-placeholder"
-                   width="1400" height="900"
-                   onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221400%22 height=%22900%22%3E%3Crect fill=%22%23F5F5F5%22 width=%22100%25%22 height=%22100%25%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23666666%22 font-family=%22Inter,sans-serif%22 font-size=%2214%22%3E1400 × 900 — Product: gate unit at society entrance%3C/text%3E%3C/svg%3E';">
+                   class="w-full h-full object-cover"
+                   width="1400" height="900">
             </div>
           </div>
         </div>
@@ -416,7 +392,8 @@
           </div>
 
           <div class="lg:col-span-7" data-animate>
-            <form action="REPLACE_WITH_FORM_ENDPOINT" method="POST" class="space-y-5">
+            <form action="https://formspree.io/f/xzdlqpgj" method="POST" class="space-y-5">
+              <input type="hidden" name="_subject" value="New Eagle-d enquiry">
 
               <div class="grid sm:grid-cols-2 gap-5">
                 <div>
