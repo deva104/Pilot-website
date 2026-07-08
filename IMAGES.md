@@ -1,4 +1,4 @@
-# Eagle-d — Image List
+# eagled — Image List
 
 All images are in `/images` as PNG files.
 
@@ -8,7 +8,7 @@ All images are in `/images` as PNG files.
 | `step-1.png` | 800 × 600 px | Close-up of the ANPR camera unit mounted at a gate, angled toward the lane. A vehicle number plate should be visible in frame (or approaching). Clean, documentary style. |
 | `step-2.png` | 800 × 600 px | A screen or admin interface showing an approved-vehicle list with number plates. Alternatively, a diagram-style photo of the verification step in action. Keep it simple and legible. |
 | `step-3.png` | 800 × 600 px | The barrier arm opening or fully open, with a vehicle passing through. Shows the outcome — access granted automatically. |
-| `product.png` | 1400 × 900 px | The Eagle-d gate unit / camera hardware installed at a society entrance. Wide shot with generous whitespace around the unit. Compact, professional hardware photography. |
+| `product.png` | 1400 × 900 px | The eagled gate unit / camera hardware installed at a society entrance. Wide shot with generous whitespace around the unit. Compact, professional hardware photography. |
 
 ## Notes
 
